@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Questly</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: the students' original Questly look (light, single column), with a Student / Teacher switch for the demo */
+:root {
+  --bg: #f4f6f9; --fg: #1f2933; --muted: #52606d; --faint: #7b8794;
+  --line: #cbd2d9; --line-soft: #e4e7eb; --surface: #ffffff;
+  --primary: #2563eb; --primary-hover: #1d4ed8; --disabled: #9aa5b1;
+  --ok-bg: #e3f9e5; --ok-fg: #1b4332; --ok-line: #99e2b4;
+  --err-bg: #fde8e8; --err-fg: #7a271a; --err-line: #f8b4b4;
+  --pop: #f0b429; --pop-bg: #fffbeb; --pop-fg: #573a08;
+  --danger: #e12d39; --danger-hover: #cf1124;
+  --demo-bg: #fff4d6; --demo-fg: #573a08;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--fg); margin: 0; line-height: 1.5; }
+.container { max-width: 640px; margin: 0 auto; padding-block: 24px 80px; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+.demo { background: var(--demo-bg); color: var(--demo-fg); font-size: .88rem; padding: 10px 14px; border-radius: 8px; margin-bottom: 20px; }
+.tabs { display: inline-flex; background: var(--line-soft); border-radius: 10px; padding: 4px; margin-bottom: 24px; }
+.tabs button { margin: 0; background: transparent; color: var(--muted); padding: 8px 16px; font-size: .92rem; }
+.tabs button:hover { background: transparent; color: var(--fg); }
+.tabs button[aria-pressed="true"] { background: var(--surface); color: var(--fg); box-shadow: 0 1px 2px rgba(0,0,0,.08); }
+h1 { font-size: 1.6rem; margin: 0 0 4px; }
+.subtitle { color: var(--muted); margin: 0 0 24px; }
+textarea { width: 100%; min-height: 120px; padding: 12px; font-size: 1rem; border: 1px solid var(--line); border-radius: 8px; resize: vertical; font-family: inherit; background: var(--surface); color: var(--fg); }
+button { margin-top: 12px; padding: 10px 20px; font-size: 1rem; border: none; border-radius: 8px; background: var(--primary); color: #fff; cursor: pointer; font-family: inherit; }
+button:hover { background: var(--primary-hover); }
+button:disabled { background: var(--disabled); cursor: not-allowed; }
+:focus-visible { outline: 3px solid var(--primary); outline-offset: 2px; }
+.message { margin-top: 14px; padding: 12px 14px; border-radius: 8px; font-size: .95rem; }
+.message.success { background: var(--ok-bg); color: var(--ok-fg); border: 1px solid var(--ok-line); }
+.message.error { background: var(--err-bg); color: var(--err-fg); border: 1px solid var(--err-line); }
+.card { background: var(--surface); border: 1px solid var(--line-soft); border-radius: 10px; padding: 16px; margin-bottom: 12px; }
+.card.answered { opacity: .6; }
+.card.popular { border-color: var(--pop); background: var(--pop-bg); }
+.badge { display: inline-block; background: var(--pop); color: var(--pop-fg); font-size: .75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; vertical-align: middle; }
+.card-text { font-size: 1.02rem; margin: 0 0 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.card-meta { font-size: .8rem; color: var(--faint); margin-bottom: 10px; }
+.card-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.card-actions button { margin: 0; padding: 6px 14px; font-size: .85rem; }
+.card-actions .secondary { background: var(--line-soft); color: var(--fg); }
+.card-actions .secondary:hover { background: var(--line); }
+.card-actions .danger { background: var(--danger); }
+.card-actions .danger:hover { background: var(--danger-hover); }
+.empty-state { color: var(--faint); text-align: center; margin-top: 40px; }
+.try { font-size: .85rem; color: var(--faint); margin-top: 22px; }
+.try b { color: var(--muted); }
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="container">
+  <p class="demo"><b>Demo mode.</b> Questions stay only on this screen and disappear when you reload. Nothing is sent or saved.</p>
+
+  <div class="tabs" role="group" aria-label="View">
+    <button type="button" id="tab-student" data-view="student" aria-pressed="true">Student</button>
+    <button type="button" id="tab-teacher" data-view="teacher" aria-pressed="false">Teacher dashboard</button>
+  </div>
+
+  <section id="studentView">
+    <h1>Ask an anonymous question</h1>
+    <p class="subtitle">Your question goes straight to the teacher. No name, no login. Just ask.</p>
+    <label for="questionText" class="subtitle" hidden>Your question</label>
+    <textarea id="questionText" placeholder="Type your question about the class here..." maxlength="1000"></textarea>
+    <div><button type="button" id="submitBtn">Send question</button></div>
+    <div class="message" id="message" role="status" hidden></div>
+    <p class="try"><b>Try the filter:</b> send something without a “?”, a very short message, “aaaaaaa?”, or a rude word, and see what happens.</p>
+  </section>
+
+  <section id="teacherView" hidden>
+    <h1>Student Questions</h1>
+    <p class="subtitle">Questions are anonymous and already filtered for length and tone. Identical questions from different students are merged and counted, so the most-asked ones are shown first and highlighted.</p>
+    <div id="questionList"></div>
+    <p class="empty-state" id="emptyState" hidden>No questions yet.</p>
+  </section>
+</div>
+
+<script>
+const config = {
+  className: "Class", keywords: [], minLength: 12,
+  bannedWords: ["stupid","idiot","idiota","dumb","dumbass","moron","imbecile","imbecil","burro","burra","estupido","estúpido","shut up","cala a boca","cale a boca","hate you","odeio voce","odeio você","go to hell","vai pro inferno","vai para o inferno","screw you","kill yourself","kys","loser","perdedor","fuck","f*ck","fk you","shit","merda","porra","bitch","bastard","asshole","ass hole","retard","retardado","vagabundo","vagabunda","otario","otário","babaca","you suck","voce e ruim","você é ruim"]
+};
+
+// Same checks as the students' filter.js
+function filterQuestion(rawText) {
+  const text = (rawText || "").trim();
+  if (!text) return { ok: false, reason: "Your question is empty." };
+  if (text.length < config.minLength) return { ok: false, reason: `Your question is too short (minimum ${config.minLength} characters). Please add more detail.` };
+  if (text.length > 1000) return { ok: false, reason: "Your question is too long (maximum 1000 characters)." };
+  if (!text.includes("?")) return { ok: false, reason: 'Your message must be a question (it should include a "?").' };
+  if (/(.)\1{5,}/.test(text)) return { ok: false, reason: "Your question looks like spam or random characters. Please rephrase it." };
+  const letters = text.replace(/[^a-zA-Z]/g, "");
+  if (letters.length > 0 && letters.length < text.length * 0.4) return { ok: false, reason: "Your question contains too many symbols or numbers. Please write it in plain text." };
+  const lower = text.toLowerCase();
+  for (const word of config.bannedWords) {
+    const w = word.toLowerCase().trim(); if (!w) continue;
+    const pattern = new RegExp(`\\b${w.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\b`, "i");
+    if (pattern.test(lower)) return { ok: false, reason: "Your question contains language that is not appropriate for this board. Please rephrase it respectfully." };
+  }
+  const keywords = config.keywords.map(k => k.toLowerCase().trim()).filter(Boolean);
+  if (keywords.length && !keywords.some(k => lower.includes(k))) return { ok: false, reason: `Your question doesn't seem related to "${config.className}".` };
+  return { ok: true };
+}
+function normalize(text) {
+  return text.toLowerCase().trim().replace(/[^\p{L}\p{N}\s]/gu, "").replace(/\s+/g, " ");
+}
+
+// In-memory only; two example questions so the dashboard isn't empty
+const ago = m => new Date(Date.now() - m * 60000).toISOString();
+let questions = [
+  { id: "ex1", text: "Can you explain the container part again?", normalized: normalize("Can you explain the container part again?"), count: 3, createdAt: ago(40), lastAskedAt: ago(5), answered: false, example: true },
+  { id: "ex2", text: "When is the homework due?", normalized: normalize("When is the homework due?"), count: 1, createdAt: ago(25), lastAskedAt: ago(25), answered: true, example: true }
+];
+let pendingDelete = null;
+
+const $ = id => document.getElementById(id);
+function showMessage(text, type) { const m = $("message"); m.textContent = text; m.className = `message ${type}`; m.hidden = false; }
+
+$("submitBtn").addEventListener("click", () => {
+  const text = $("questionText").value.trim();
+  if (!text) return showMessage("Please write a question before sending.", "error");
+  const result = filterQuestion(text);
+  if (!result.ok) return showMessage(result.reason, "error");
+  const n = normalize(text), now = new Date().toISOString();
+  const existing = questions.find(q => q.normalized === n);
+  if (existing) { existing.count++; existing.lastAskedAt = now; existing.answered = false; }
+  else questions.unshift({ id: "q" + Date.now(), text, normalized: n, count: 1, createdAt: now, lastAskedAt: now, answered: false });
+  $("questionText").value = "";
+  showMessage("Your question was sent to the teacher anonymously. Thank you! (Open the Teacher dashboard to see it.)", "success");
+});
+
+function renderQuestions() {
+  const list = $("questionList"); list.innerHTML = "";
+  const sorted = [...questions].sort((a, b) => b.count - a.count || new Date(b.lastAskedAt) - new Date(a.lastAskedAt));
+  $("emptyState").hidden = sorted.length > 0;
+  for (const q of sorted) {
+    const card = document.createElement("div");
+    card.className = `card${q.answered ? " answered" : ""}${q.count > 1 ? " popular" : ""}`;
+    const p = document.createElement("p"); p.className = "card-text"; p.textContent = q.text;
+    if (q.count > 1) { const b = document.createElement("span"); b.className = "badge"; b.textContent = `Asked ${q.count} times`; p.append(" ", b); }
+    const meta = document.createElement("div"); meta.className = "card-meta";
+    const fmt = iso => new Date(iso).toLocaleString();
+    meta.textContent = `First asked ${fmt(q.createdAt)} · Last asked ${fmt(q.lastAskedAt)} · ${q.answered ? "Answered" : "Pending"}${q.example ? " · Example" : ""}`;
+    const actions = document.createElement("div"); actions.className = "card-actions";
+    const t = document.createElement("button"); t.type = "button"; t.className = "secondary";
+    t.textContent = q.answered ? "Mark as pending" : "Mark as answered";
+    t.onclick = () => { q.answered = !q.answered; renderQuestions(); };
+    const d = document.createElement("button"); d.type = "button"; d.className = "danger";
+    d.textContent = pendingDelete === q.id ? "Click again to delete" : "Delete";
+    d.onclick = () => {
+      if (pendingDelete === q.id) { questions = questions.filter(x => x.id !== q.id); pendingDelete = null; }
+      else pendingDelete = q.id;
+      renderQuestions();
+    };
+    actions.append(t, d);
+    card.append(p, meta, actions);
+    list.append(card);
+  }
+}
+
+document.querySelector(".tabs").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  const v = b.dataset.view;
+  document.querySelectorAll(".tabs button").forEach(x => x.setAttribute("aria-pressed", String(x === b)));
+  $("studentView").hidden = v !== "student";
+  $("teacherView").hidden = v !== "teacher";
+  pendingDelete = null;
+  if (v === "teacher") renderQuestions();
+});
+</script>
+
+</body>
+</html>

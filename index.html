@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="Projetos desenvolvidos pelos alunos do 9º ano na disciplina de Design (MYP).">
+<meta property="og:title" content="Projetos de Design do 9º ano">
+<meta property="og:description" content="Projetos desenvolvidos pelos alunos do 9º ano na disciplina de Design (MYP).">
+<title>Projetos de Design do 9º ano</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Open+Sans:ital,wght@0,400;0,600;1,400&display=swap">
+<style>
+/* Layout: dark single-theme hub — hero with the deck's bulb motif, 4-step process strip, filterable project grid, skills cloud footer */
+:root {
+  --navy: #0A0E2E;
+  --card: #161C4A;
+  --card-hi: #1D2560;
+  --white: #FFFFFF;
+  --muted: #A9B4E8;
+  --cyan: #00E5FF;
+  --lime: #C6FF00;
+  --pink: #FF4FD8;
+  --purple: #7C5CFF;
+  --orange: #FF9F1C;
+  --green: #2EE59D;
+  --display: "Montserrat", "Segoe UI", Arial, sans-serif;
+  --body: "Open Sans", "Segoe UI", Arial, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--navy); color: var(--white); font-family: var(--body); font-size: 16px; line-height: 1.55; }
+a { color: inherit; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1, h2, h3 { font-family: var(--display); margin: 0; text-wrap: balance; }
+.eyebrow { font-family: var(--display); font-weight: 700; font-size: 13px; letter-spacing: .18em; text-transform: uppercase; color: var(--cyan); }
+:focus-visible { outline: 3px solid var(--lime); outline-offset: 3px; border-radius: 6px; }
+
+/* top bar */
+.topbar { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding-block: 20px; }
+.brand { display: flex; align-items: center; gap: 10px; font-family: var(--display); font-weight: 700; font-size: 15px; }
+.brand .dot { width: 30px; height: 30px; border-radius: 50%; background: var(--lime); display: grid; place-items: center; }
+.lang { display: flex; background: var(--card); border-radius: 999px; padding: 4px; }
+.lang button { border: 0; background: transparent; color: var(--muted); font: 700 13px var(--display); padding: 6px 14px; border-radius: 999px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--lime); color: var(--navy); }
+
+/* hero */
+.hero { padding-block: 28px 32px; max-width: 760px; }
+.hero .lede { color: var(--muted); font-size: 18px; margin: 14px 0 0; max-width: 56ch; }
+.hero h1 { font-size: clamp(34px, 5.5vw, 56px); line-height: 1.05; font-weight: 800; }
+.hero h1 span { color: var(--lime); display: block; }
+.hero .hook { font-style: italic; color: var(--muted); font-size: 19px; margin: 22px 0 0; max-width: 34ch; }
+.hero .stats { display: flex; gap: 28px; margin-top: 30px; flex-wrap: wrap; }
+.stat b { display: block; font: 800 34px var(--display); color: var(--cyan); line-height: 1; }
+.stat small { color: var(--muted); font-size: 13px; }
+.orb { position: relative; width: min(100%, 360px); aspect-ratio: 1; justify-self: center; max-width: 100%; }
+.orb .glow { position: absolute; inset: 0; border-radius: 50%; background: var(--purple); opacity: .5; }
+.orb .core { position: absolute; inset: 15%; border-radius: 50%; background: var(--lime); display: grid; place-items: center; }
+.orb .core svg { width: 42%; height: 42%; }
+.orb .sat { position: absolute; border-radius: 50%; display: grid; place-items: center; }
+.orb .sat.a { width: 22%; aspect-ratio: 1; background: var(--cyan); left: -2%; bottom: 4%; }
+.orb .sat.b { width: 17%; aspect-ratio: 1; background: var(--pink); right: 2%; top: 0; }
+.orb .sat svg { width: 46%; height: 46%; }
+@media (prefers-reduced-motion: no-preference) {
+  .orb .sat.a { animation: float 6s ease-in-out infinite; }
+  .orb .sat.b { animation: float 5s ease-in-out infinite reverse; }
+  @keyframes float { 50% { transform: translateY(-10px); } }
+}
+
+/* process strip */
+.process { padding-block: 8px 56px; }
+.steps { list-style: none; padding: 0; margin: 18px 0 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.steps li { background: var(--card); border-radius: 16px; padding: 18px; position: relative; min-width: 0; }
+.steps .n { font: 800 13px var(--display); color: var(--navy); background: var(--lime); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; }
+.steps li:last-child .n { background: var(--cyan); }
+.steps h3 { font-size: 16px; margin-top: 12px; }
+.steps p { color: var(--muted); font-size: 14px; margin: 6px 0 0; }
+
+/* projects */
+.projects-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+.projects-head h2 { font-size: clamp(30px, 4.4vw, 44px); margin-top: 8px; }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.filters button { border: 1.5px solid var(--muted); background: transparent; color: var(--muted); font: 600 13px var(--display); padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+.filters button:hover { color: var(--white); border-color: var(--white); }
+.filters button[aria-pressed="true"] { background: var(--lime); border-color: var(--lime); color: var(--navy); }
+.grid { display: flex; flex-direction: column; gap: 40px; margin-top: 36px; padding-bottom: 72px; }
+.cls-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding-bottom: 14px; margin-bottom: 18px; border-bottom: 1px solid var(--card-hi); }
+.cls-head h3 { font-size: 24px; display: flex; align-items: center; gap: 12px; }
+.cls-dot { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+.cls-count { color: var(--muted); font-size: 14px; }
+.cards { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.cards .p { padding: 22px 20px; }
+.cards .p h3 { font-size: 19px; }
+.p { background: var(--card); border-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 14px; min-width: 0; transition: transform .2s, background .2s; }
+.p:hover { transform: translateY(-4px); background: var(--card-hi); }
+.p .head { display: flex; align-items: center; gap: 14px; }
+.p .ic { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; flex: none; }
+.p .ic svg { width: 26px; height: 26px; }
+.p h3 { font-size: 21px; line-height: 1.15; }
+.p .tag { font: 700 11px var(--display); letter-spacing: .12em; text-transform: uppercase; margin-top: 4px; display: block; }
+.p .desc { color: var(--white); margin: 0; font-size: 15px; flex: 1; }
+.p .open { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; font: 700 14px var(--display); color: var(--navy); background: var(--white); padding: 10px 18px; border-radius: 999px; }
+.p .open:hover { background: var(--lime); }
+.p .open svg { width: 14px; height: 14px; }
+.p .hint { margin: 0; font-size: 13px; line-height: 1.45; color: var(--white); background: var(--navy); border-radius: 10px; padding: 8px 12px; }
+.p .hint b { color: var(--lime); }
+.p .note { font-size: 12px; color: var(--muted); font-style: italic; margin-top: -6px; }
+
+/* skills */
+.skills { background: var(--card); border-radius: 28px; padding: 40px 32px; margin-bottom: 40px; }
+.skills h2 { font-size: clamp(26px, 3.6vw, 36px); margin-top: 8px; }
+.cloud { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.cloud span { font: 700 16px var(--display); color: var(--navy); padding: 10px 20px; border-radius: 999px; }
+footer { color: var(--muted); font-size: 13px; padding-block: 0 40px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+
+@media (max-width: 1040px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps li:last-child { grid-column: 1 / -1; }
+}
+@media (max-width: 640px) {
+  .hero { padding-block: 12px 24px; }
+  .orb { width: 220px; grid-row: 1; }
+  .cards { grid-template-columns: 1fr; }
+  .skills { padding: 28px 20px; }
+}
+</style>
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header class="topbar">
+    <div class="brand"><span class="dot"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#0A0E2E" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.2 1 2V17h6v-.3c0-.8.4-1.5 1-2A7 7 0 0 0 12 2z"/></svg></span>MYP Design · Grade 9</div>
+    <div class="lang" role="group" aria-label="Language">
+      <button type="button" id="lang-pt" data-lang="pt" aria-pressed="true">PT</button>
+      <button type="button" id="lang-en" data-lang="en" aria-pressed="false">EN</button>
+    </div>
+  </header>
+
+  <section class="hero">
+    <h1 data-i="heroTitle">Grade 9 Design Projects</h1>
+    <p class="lede" data-i="heroText">Projects developed by Grade 9 students in MYP Design. Choose a class and open a project to try it.</p>
+  </section>
+
+  <section aria-labelledby="proj-title">
+    <div class="projects-head">
+      <div class="filters" id="filters" role="group" aria-label="Filter by class"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <section class="skills" aria-labelledby="skills-title">
+    <div class="eyebrow" data-i="skEyebrow">What we learned</div>
+    <h2 id="skills-title" data-i="skTitle">Skills built along the way</h2>
+    <div class="cloud" id="cloud"></div>
+  </section>
+
+  <footer>
+    <span data-i="foot">MYP Design · Grade 9 · Efficiency problems in our school community</span>
+    <span data-i="foot2">Each prototype opens in a new tab.</span>
+  </footer>
+</div>
+
+<script>
+const C = { cyan: "var(--cyan)", lime: "var(--lime)", pink: "var(--pink)", orange: "var(--orange)", green: "var(--green)", purple: "var(--purple)" };
+const ICON = {
+  drop: '<path d="M12 2.7S5 10 5 14.5a7 7 0 0 0 14 0C19 10 12 2.7 12 2.7z"/>',
+  eye: '<path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V3H6.5A2.5 2.5 0 0 0 4 5.5v14zM4 19.5A2.5 2.5 0 0 0 6.5 22H20v-5"/>',
+  cal: '<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>',
+  school: '<path d="M3 21h18M5 21V10l7-5 7 5v11M9 21v-5h6v5"/>',
+  clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+  car: '<path d="M5 17H3v-5l2-5h14l2 5v5h-2M7 17h10"/><circle cx="7" cy="17" r="2"/><circle cx="17" cy="17" r="2"/>',
+  face: '<path d="M3 7V5a2 2 0 0 1 2-2h2M17 3h2a2 2 0 0 1 2 2v2M21 17v2a2 2 0 0 1-2 2h-2M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M9 9h.01M15 9h.01M9 15c1.7 1.3 4.3 1.3 6 0"/>',
+  shirt: '<path d="M20.4 6.6 16 3a4 4 0 0 1-8 0L3.6 6.6 6 10l2-1v12h8V9l2 1z"/>',
+  ask: '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9.5 8.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5M12 14.5h.01"/>',
+  heart: '<path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.7l-1-1.1a5.5 5.5 0 0 0-7.8 7.8L12 21.2l8.8-8.8a5.5 5.5 0 0 0 0-7.8z"/><path d="M12 9v6M9 12h6"/>'
+};
+const CLASSES = {
+  all: { en: "All classes", pt: "Todas as turmas", color: "var(--lime)" },
+  alpha: { en: "G9 Alpha", pt: "G9 Alpha", color: "var(--cyan)" },
+  delta: { en: "G9 Delta", pt: "G9 Delta", color: "var(--pink)" },
+  omega: { en: "G9 Omega", pt: "G9 Omega", color: "var(--orange)" }
+};
+const CATS = {
+  routine: { en: "School routine", pt: "Rotina escolar" },
+  arrival: { en: "Arrival & attendance", pt: "Chegada e frequência" },
+  safety: { en: "Safety", pt: "Segurança" },
+  eco: { en: "Sustainability", pt: "Sustentabilidade" },
+  life: { en: "Everyday life", pt: "Dia a dia" },
+  health: { en: "Health & wellbeing", pt: "Saúde e bem-estar" },
+  learning: { en: "Learning", pt: "Aprendizagem" }
+};
+const PROJECTS = [
+  { name: "EcoFlush", cls: "omega", url: "https://ecoflush-flow-tech.base44.app/", cat: "eco", icon: "drop", color: C.green,
+    en: "An automatic flush with ultrasonic detection: more hygiene, accessibility and responsible water use.",
+    pt: "Descarga automática com detecção ultrassônica: mais higiene, acessibilidade e uso responsável da água." },
+  { name: "SentryEye", cls: "omega", url: "https://empathy-cam.lovable.app/", cat: "safety", icon: "eye", color: C.pink,
+    en: "A camera prototype that uses AI to detect fights in real time.",
+    pt: "Protótipo de câmera que usa IA para detectar brigas em tempo real." },
+  { name: "vylo", cls: "omega", url: "https://vylostudy.lovable.app", cat: "routine", icon: "book", color: C.cyan,
+    en: "An AI study mentor that organizes your school agenda and builds study plans that adapt to your pace.",
+    pt: "Mentor de estudos com IA que organiza a agenda escolar e cria planos de estudo adaptados ao seu ritmo." },
+  { name: "BY Agenda", cls: "omega", url: "https://by-agenda.lovable.app/auth", cat: "routine", icon: "cal", color: C.lime, login: true,
+    en: "A digital school agenda to keep track of classes and tasks.",
+    pt: "Agenda escolar digital para acompanhar aulas e tarefas." },
+  { name: "OBA", cls: "delta", url: "https://oba-beityaacov.lovable.app", cat: "routine", icon: "school", color: C.orange,
+    en: "A school platform with routine, messages, attendance and grades in one place.",
+    pt: "Plataforma escolar com rotina, comunicação, frequência e notas em um só lugar." },
+  { name: "Auto Check-In", cls: "delta", url: "https://autolatecheckin.lovable.app/", cat: "arrival", icon: "clock", color: C.cyan,
+    en: "A self-service kiosk where late students check in and print their own pass.",
+    pt: "Totem onde alunos atrasados fazem o check-in e imprimem o próprio passe." },
+  { name: "S.M.A.R.T.", cls: "delta", url: "https://smartsim-8dubupyq.manus.space/", cat: "arrival", icon: "car", color: C.lime,
+    en: "Smooth Arrival: makes school drop-off clearer, calmer and more predictable.",
+    pt: "Smooth Arrival: deixa a chegada à escola mais clara, tranquila e previsível." },
+  { name: "FIDAL", cls: "delta", url: "https://fidal.lovable.app/", cat: "arrival", icon: "face", color: C.purple,
+    en: "Face ID to Arrive and Leave: tracks arrivals, departures and discipline.",
+    pt: "Face ID to Arrive and Leave: registra entradas, saídas e ocorrências." },
+  { name: "The SmartCloset", cls: "alpha", url: "https://chroma-closet-companion.lovable.app", cat: "life", icon: "shirt", color: C.pink,
+    en: "Catalog your own clothes and get complete outfits for any occasion.",
+    pt: "Catalogue suas roupas e receba looks completos para cada ocasião." },
+  { name: "Beit Yaacov Infirmary", cls: "alpha", url: "https://care-buddy-line.lovable.app/", cat: "health", icon: "heart", color: C.green,
+    en: "Students report their pain before visiting the nurse and are placed in line by how serious it is.",
+    pt: "O aluno informa o que está sentindo antes de ir à enfermaria e entra na fila conforme a gravidade." },
+  { name: "Triagem Digital", cls: "alpha", url: "https://infirmary-care-compass.lovable.app", cat: "health", icon: "heart", color: C.orange,
+    en: "A digital queue for the school infirmary that ranks students by urgency and shows a live display panel.",
+    pt: "Fila digital da enfermaria que organiza o atendimento por urgência e mostra um painel em tempo real.",
+    hint: { en: 'To open the test view, type <b>Aluno</b> in the <b>E-mail</b> field.', pt: 'Para entrar na visualização de teste, basta digitar <b>Aluno</b> no campo <b>E-mail</b>.' } },
+  { name: "Questly", cls: "alpha", url: "questly.html", cat: "learning", icon: "ask", color: C.cyan,
+    en: "Students ask the teacher anonymous questions; a filter blocks spam and rude messages and merges repeated questions.",
+    pt: "Os alunos mandam perguntas anônimas ao professor; um filtro barra spam e ofensas e junta perguntas repetidas." }
+];
+const SKILLS = [["Research","Pesquisa",C.cyan],["Collaboration","Colaboração",C.lime],["Communication","Comunicação",C.pink],["Creativity","Criatividade",C.orange],["Critical Thinking","Pensamento crítico",C.purple],["Resilience","Resiliência",C.green],["Time Management","Gestão do tempo",C.cyan],["Self-Management","Autogestão",C.lime]];
+const T = {
+  en: {},
+  pt: { heroTitle: "Projetos de Design do 9º ano", heroText: "Projetos desenvolvidos pelos alunos do 9º ano na disciplina de Design (MYP). Escolha uma turma e abra um projeto para testar.", eyebrow: "Hub de projetos dos alunos", h1a: "Do Problema", h1b: "ao Produto", hook: "E se os alunos pudessem resolver os problemas da própria escola?",
+    s1: "protótipos funcionando", s2: "etapas de design", s3: "hackathon", s4: "turmas", procEyebrow: "Como chegamos aqui",
+    st1: "Identificar o problema", st1d: "Conhecimentos de todas as disciplinas e pesquisa para achar problemas reais.",
+    st2: "Ouvir e verificar", st2d: "Entrevistas e pesquisas para delimitar a solução.",
+    st3: "Prototipar e justificar", st3d: "“Por que precisamos disso?” Um protótipo como teste de viabilidade.",
+    st4: "Construir!", st4d: "Cada grupo construiu sua própria solução.",
+    st5: "Hackathon", st5d: "Apresentação a jurados externos, com feedback construtivo.",
+    projEyebrow: "Os projetos", projTitle: "Teste os protótipos", skEyebrow: "O que aprendemos", skTitle: "Habilidades desenvolvidas no caminho",
+    foot: "MYP Design · 9º ano · Problemas de eficiência na nossa comunidade escolar", foot2: "Cada protótipo abre em uma nova aba." }
+};
+const UI = { en: { open: "Open project", login: "Login required" }, pt: { open: "Abrir projeto", login: "Exige login" } };
+const EN_TEXT = {};
+document.querySelectorAll("[data-i]").forEach(el => EN_TEXT[el.dataset.i] = el.textContent);
+
+let lang = "pt", filter = "all";
+try { const s = localStorage.getItem("hub-lang-v2"); if (s === "pt" || s === "en") lang = s; } catch (e) {}
+
+const arrow = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7M8 7h9v9"/></svg>';
+function card(p) {
+  return `
+    <article class="p">
+      <div class="head">
+        <div class="ic" style="background:${p.color}"><svg viewBox="0 0 24 24" fill="none" stroke="#0A0E2E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${ICON[p.icon]}</svg></div>
+        <div><h3>${p.name}</h3><span class="tag" style="color:${p.color}">${CATS[p.cat][lang]}</span></div>
+      </div>
+      <p class="desc">${p[lang]}</p>
+      ${p.hint ? `<p class="hint">${p.hint[lang]}</p>` : ""}
+      <a class="open" href="${p.url}" target="_blank" rel="noopener">${UI[lang].open} ${arrow}</a>
+      ${p.login ? `<span class="note">${UI[lang].login}</span>` : ""}
+    </article>`;
+}
+function render() {
+  document.documentElement.lang = lang === "pt" ? "pt-BR" : "en";
+  document.querySelectorAll("[data-i]").forEach(el => { el.textContent = (T[lang][el.dataset.i]) || EN_TEXT[el.dataset.i]; });
+  document.querySelectorAll(".lang button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.lang === lang)));
+  document.getElementById("filters").innerHTML = Object.entries(CLASSES).map(([k, v]) =>
+    `<button type="button" id="f-${k}" data-f="${k}" aria-pressed="${k === filter}">${v[lang]}</button>`).join("");
+  const keys = filter === "all" ? ["alpha", "delta", "omega"] : [filter];
+  document.getElementById("grid").innerHTML = keys.map(k => {
+    const list = PROJECTS.filter(p => p.cls === k);
+    const n = list.length, word = lang === "pt" ? (n === 1 ? "projeto" : "projetos") : (n === 1 ? "project" : "projects");
+    return `<section class="cls" aria-labelledby="h-${k}">
+      <div class="cls-head"><h3 id="h-${k}"><span class="cls-dot" style="background:${CLASSES[k].color}"></span>${CLASSES[k][lang]}</h3><span class="cls-count">${n} ${word}</span></div>
+      <div class="cards">${list.map(card).join("")}</div>
+    </section>`;
+  }).join("");
+  document.getElementById("cloud").innerHTML = SKILLS.map(s => `<span style="background:${s[2]}">${lang === "pt" ? s[1] : s[0]}</span>`).join("");
+}
+document.querySelector(".lang").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  lang = b.dataset.lang; try { localStorage.setItem("hub-lang-v2", lang); } catch (err) {}
+  render();
+});
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  filter = b.dataset.f; render(); document.getElementById("f-" + filter).focus();
+});
+render();
+</script>
+
+</body>
+</html>
